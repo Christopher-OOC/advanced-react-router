@@ -21,6 +21,8 @@ const productsSlice = createSlice({
       },
       reducer(state, action) {
         state.products = action.payload.products;
+        state.isLoading = false;
+        state.error = "";
       },
     },
     searchInProgress(state, action) {

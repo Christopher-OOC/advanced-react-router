@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { searchProducts } from "./productSlice";
 import { useDispatch, useSelector } from "react-redux";
+import Product from "./Product";
 
 function ProductList() {
   const [search, setSearch] = useState("");
   const dispatch = useDispatch();
-  const products = useSelector((store) => store.products.products);
+  const { products, isLoading, error } = useSelector((store) => store.products);
 
   function handleSearch(e) {
     e.preventDefault();
@@ -24,10 +25,11 @@ function ProductList() {
           />
           <button onClick={(e) => handleSearch(e)}>Search</button>
         </div>
+        <div>Number of search: {products.length}</div>
       </form>
       <div className="product__container">
         {products.map((product) => (
-          <div className="product">Item</div>
+          <Product product={product} />
         ))}
       </div>
     </div>
