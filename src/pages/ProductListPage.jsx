@@ -1,5 +1,5 @@
 import Nav from "../components/Nav";
-import ProductList from "../features/ProductList";
+import ProductList from "../features/products/ProductList";
 
 function ProductListPage() {
   return (
