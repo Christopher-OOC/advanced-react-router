@@ -1,10 +1,15 @@
 import { useState } from "react";
+import { searchProducts } from "./productSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 function ProductList() {
   const [search, setSearch] = useState("");
+  const dispatch = useDispatch();
+  const products = useSelector((store) => store.products.products);
 
   function handleSearch(e) {
     e.preventDefault();
+    dispatch(searchProducts(search));
   }
 
   return (
@@ -21,7 +26,9 @@ function ProductList() {
         </div>
       </form>
       <div className="product__container">
-        <div className="product">Item</div>
+        {products.map((product) => (
+          <div className="product">Item</div>
+        ))}
       </div>
     </div>
   );

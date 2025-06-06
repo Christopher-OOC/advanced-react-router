@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { getProducts } from "../../services/apiProducts";
 
 const initialState = {
   products: [],
@@ -26,19 +27,25 @@ const productsSlice = createSlice({
       state.isLoading = true;
     },
     searchError(state, action) {
-      state.error = action.payload.error;
+      state.error = action.payload;
       state.isLoading = false;
       state.products = [];
     },
   },
 });
 
-export function searchProduct(search) {
+export function searchProducts(search) {
   return async function reducer(dispatch, getState) {
     dispatch({ type: "products/searchInProgress" });
 
-    
-      dispatch({ type: "products/searchSuccess", payload: { products: data } });
+    try {
+      const products = await getProducts(search);
+      dispatch({
+        type: "products/searchSuccess",
+        payload: { products: products },
+      });
+    } catch (error) {
+      dispatch({ type: "products/searchError", payload: error.message });
     }
   };
 }
