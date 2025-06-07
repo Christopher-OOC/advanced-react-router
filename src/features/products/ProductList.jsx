@@ -35,6 +35,7 @@ function ProductList() {
         </div>
       </form>
       {isLoading && !error && <Spinner />}
+      {!isLoading && error && <p>{error}</p>}
       {!isLoading && !error && products.length === 0 && <p>Empty products!</p>}
       {!isLoading && !error && (
         <div className="product__container">
