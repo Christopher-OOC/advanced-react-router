@@ -3,6 +3,7 @@ import HomePage from "./pages/HomePage";
 import ProductListPage from "./pages/ProductListPage";
 import { Provider } from "react-redux";
 import store from "./store";
+import CreateProductPage from "./pages/CreateProductPage";
 
 const router = createBrowserRouter([
   {
@@ -12,6 +13,10 @@ const router = createBrowserRouter([
   {
     path: "/products",
     element: <ProductListPage />,
+  },
+  {
+    path: "/product/new",
+    element: <CreateProductPage />,
   },
 ]);
 
