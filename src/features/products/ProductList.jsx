@@ -3,30 +3,19 @@ import { searchProducts } from "./productSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Product from "./Product";
 import Spinner from "../../components/Spinner";
-import { getProducts } from "../../services/apiProducts";
 
 function ProductList() {
   const [search, setSearch] = useState("");
-  const [searchProduct, setSearchProduct] = useState([]);
   const dispatch = useDispatch();
   let { products, isLoading, error } = useSelector((store) => store.products);
 
-  useEffect(
-    function () {
-      async function fetchData() {
-        const data = await getProducts();
-        setSearchProduct(data);
-      }
-
-      fetchData();
-    },
-    [search]
-  );
+  useEffect(function () {
+    dispatch(searchProducts());
+  }, []);
 
   async function handleSearch(e) {
     e.preventDefault();
-    const data = await getProducts(search);
-    setSearchProduct(data);
+    dispatch(searchProducts(search));
   }
 
   return (
@@ -41,15 +30,13 @@ function ProductList() {
           />
           <button onClick={(e) => handleSearch(e)}>Search</button>
         </div>
-        <div>Number of search: {searchProduct.length}</div>
+        <div>Number of search: {products.length}</div>
       </form>
       {isLoading && !error && <Spinner />}
-      {!isLoading && !error && searchProduct.length === 0 && (
-        <p>Empty products!</p>
-      )}
+      {!isLoading && !error && products.length === 0 && <p>Empty products!</p>}
       {!isLoading && !error && (
         <div className="product__container">
-          {searchProduct.map((product) => (
+          {products.map((product) => (
             <Product product={product} />
           ))}
         </div>
