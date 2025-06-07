@@ -1,5 +1,4 @@
 import { Form, redirect } from "react-router-dom";
-import Nav from "../../components/Nav";
 import { useState } from "react";
 import { addProduct } from "../../services/apiProducts";
 
