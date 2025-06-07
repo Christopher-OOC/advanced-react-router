@@ -30,7 +30,9 @@ function ProductList() {
           />
           <button onClick={(e) => handleSearch(e)}>Search</button>
         </div>
-        <div>Number of search: {products.length}</div>
+        <div>
+          Number of search: {isLoading ? "Seaching..." : products.length}
+        </div>
       </form>
       {isLoading && !error && <Spinner />}
       {!isLoading && !error && products.length === 0 && <p>Empty products!</p>}
