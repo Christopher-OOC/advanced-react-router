@@ -1,4 +1,4 @@
-import { Form, redirect } from "react-router-dom";
+import { Form, redirect, useActionData } from "react-router-dom";
 import { useState } from "react";
 import { addProduct } from "../../services/apiProducts";
 
@@ -7,6 +7,7 @@ function CreateProduct() {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState(1);
   const [availableQuantity, setAvailableQuantity] = useState(1);
+  const errors = useActionData();
 
   const newProduct = {
     name,
@@ -29,6 +30,7 @@ function CreateProduct() {
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
+            {errors?.name && <p style={{ color: "red" }}>{errors.name}</p>}
           </div>
           <div>
             <label>Description: </label>
@@ -37,6 +39,9 @@ function CreateProduct() {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
+            {errors?.description && (
+              <p style={{ color: "red" }}>{errors.description}</p>
+            )}
           </div>
           <div>
             <label>Price: </label>
@@ -77,13 +82,16 @@ function CreateProduct() {
 export async function action({ request }) {
   const formData = await request.formData();
   const obj = Object.fromEntries(formData);
+  const product = JSON.parse(obj.data);
 
   const error = {};
 
-  if (obj.address === "") {
-    error.address = "No address";
+  if (product.name === "") {
+    error.name = "No Name";
   }
-
+  if (product.description === "") {
+    error.description = "No Description";
+  }
   if (Object.keys(error).length > 0) {
     return error;
   }
