@@ -1,16 +1,32 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { searchProducts } from "./productSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Product from "./Product";
+import Spinner from "../../components/Spinner";
+import { getProducts } from "../../services/apiProducts";
 
 function ProductList() {
   const [search, setSearch] = useState("");
+  const [searchProduct, setSearchProduct] = useState([]);
   const dispatch = useDispatch();
-  const { products, isLoading, error } = useSelector((store) => store.products);
+  let { products, isLoading, error } = useSelector((store) => store.products);
 
-  function handleSearch(e) {
+  useEffect(
+    function () {
+      async function fetchData() {
+        const data = await getProducts();
+        setSearchProduct(data);
+      }
+
+      fetchData();
+    },
+    [search]
+  );
+
+  async function handleSearch(e) {
     e.preventDefault();
-    dispatch(searchProducts(search));
+    const data = await getProducts(search);
+    setSearchProduct(data);
   }
 
   return (
@@ -25,13 +41,19 @@ function ProductList() {
           />
           <button onClick={(e) => handleSearch(e)}>Search</button>
         </div>
-        <div>Number of search: {products.length}</div>
+        <div>Number of search: {searchProduct.length}</div>
       </form>
-      <div className="product__container">
-        {products.map((product) => (
-          <Product product={product} />
-        ))}
-      </div>
+      {isLoading && !error && <Spinner />}
+      {!isLoading && !error && searchProduct.length === 0 && (
+        <p>Empty products!</p>
+      )}
+      {!isLoading && !error && (
+        <div className="product__container">
+          {searchProduct.map((product) => (
+            <Product product={product} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
