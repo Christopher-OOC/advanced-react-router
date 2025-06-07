@@ -29,6 +29,9 @@ function CreateProduct() {
             <label>File: </label>
             <input type="file" />
           </div>
+          <div>
+            <button type="submit">Create</button>
+          </div>
         </Form>
       </div>
     </div>
