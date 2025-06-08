@@ -1,4 +1,4 @@
-import { Form, redirect, useActionData } from "react-router-dom";
+import { Form, redirect, useActionData, useNavigation } from "react-router-dom";
 import { useState } from "react";
 import { addProduct } from "../../services/apiProducts";
 
@@ -8,6 +8,8 @@ function CreateProduct() {
   const [price, setPrice] = useState(1);
   const [availableQuantity, setAvailableQuantity] = useState(1);
   const errors = useActionData();
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state === "submitting";
 
   const newProduct = {
     name,
@@ -71,7 +73,9 @@ function CreateProduct() {
             />
           </div>
           <div>
-            <button type="submit">Create</button>
+            <button type="submit">
+              {isSubmitting ? "Creating..." : "Create"}
+            </button>
           </div>
         </Form>
       </div>

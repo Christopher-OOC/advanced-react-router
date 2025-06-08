@@ -9,6 +9,8 @@ function ProductList() {
   const dispatch = useDispatch();
   let { products, isLoading, error } = useSelector((store) => store.products);
 
+  console.log(products);
+
   useEffect(function () {
     dispatch(searchProducts());
   }, []);
